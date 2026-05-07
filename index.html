@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Namba Ooru Express Delivery</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4AF37;
+  --gold-light:#F5D76E;
+  --gold-dark:#A0822A;
+  --black:#0A0A0A;
+  --black2:#111111;
+  --black3:#1A1A1A;
+  --black4:#222222;
+  --white:#F5F0E8;
+  --white2:#EDE8DC;
+  --glass:rgba(212,175,55,0.08);
+  --glass-border:rgba(212,175,55,0.25);
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Raleway',sans-serif;overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--black2)}
+::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:2px}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,0.15);transition:all 0.3s}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-shadow:0 0 20px rgba(212,175,55,0.4)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--white2);text-decoration:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--gold);color:var(--black);padding:0.5rem 1.5rem;border:none;font-family:'Raleway',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.nav-cta:hover{background:var(--gold-light);box-shadow:0 0 20px rgba(212,175,55,0.4)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#0A0A0A 0%,#111111 50%,#0D0D0D 100%)}
+.hero-bg-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(212,175,55,0.03) 80px,rgba(212,175,55,0.03) 81px),repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(212,175,55,0.03) 80px,rgba(212,175,55,0.03) 81px)}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(212,175,55,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-glow2{position:absolute;bottom:10%;right:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(212,175,55,0.05) 0%,transparent 70%);pointer-events:none}
+.hero-content{text-align:center;z-index:2;padding:2rem;max-width:900px}
+.hero-badge{display:inline-block;border:1px solid var(--gold-dark);color:var(--gold);font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;padding:0.4rem 1.5rem;margin-bottom:2rem;font-family:'Raleway',sans-serif;font-weight:600}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(2rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1rem;color:var(--gold);text-shadow:0 0 40px rgba(212,175,55,0.3)}
+.hero-title span{color:var(--white);display:block;font-size:clamp(1.2rem,3vw,2.5rem);font-weight:400;letter-spacing:0.05em;margin-top:0.5rem}
+.hero-tagline{font-size:clamp(0.9rem,2vw,1.1rem);color:rgba(245,240,232,0.7);margin:1.5rem 0;letter-spacing:0.15em;font-weight:300}
+.hero-tagline strong{color:var(--gold);font-weight:600}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:var(--gold-light);margin-bottom:2.5rem;opacity:0.9}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-gold{background:var(--gold);color:var(--black);padding:0.9rem 2.5rem;border:none;font-family:'Raleway',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.3s;position:relative;overflow:hidden}
+.btn-gold::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);opacity:0;transition:opacity 0.3s}
+.btn-gold:hover{background:var(--gold-light);box-shadow:0 0 30px rgba(212,175,55,0.5);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--gold);padding:0.9rem 2.5rem;border:1px solid var(--gold);font-family:'Raleway',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.3s}
+.btn-outline:hover{background:var(--glass);box-shadow:0 0 20px rgba(212,175,55,0.2);transform:translateY(-2px)}
+.hero-scooter{font-size:5rem;margin:2rem 0;animation:float 3s ease-in-out infinite;display:block}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:3rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--gold)}
+.stat-label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,240,232,0.5);margin-top:0.2rem}
+.stat-div{width:1px;background:rgba(212,175,55,0.2);align-self:stretch}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);text-align:center;color:rgba(212,175,55,0.5);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0.5rem auto 0}
+
+/* SECTIONS */
+section{padding:6rem 2rem}
+.section-label{display:inline-block;color:var(--gold);font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:600;margin-bottom:1rem;border-left:2px solid var(--gold);padding-left:1rem}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.2;margin-bottom:1rem}
+.section-title .gold{color:var(--gold)}
+.section-sub{color:rgba(245,240,232,0.6);font-size:1rem;line-height:1.8;max-width:600px}
+.divider{width:60px;height:2px;background:linear-gradient(to right,var(--gold),transparent);margin:1.5rem 0}
+.center{text-align:center}
+.center .divider{margin:1.5rem auto}
+.center .section-sub{margin:0 auto}
+
+/* ABOUT */
+.about{background:var(--black2)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1100px;margin:0 auto;align-items:center}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.glass-card{background:var(--glass);border:1px solid var(--glass-border);padding:1.5rem;backdrop-filter:blur(10px);transition:all 0.3s;position:relative;overflow:hidden}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.glass-card:hover{background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.4);transform:translateY(-4px)}
+.glass-card-icon{font-size:2rem;margin-bottom:1rem}
+.glass-card h3{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:0.5rem}
+.glass-card p{font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.6}
+
+/* SERVICES */
+.services{background:var(--black)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;max-width:1100px;margin:3rem auto 0}
+.service-card{background:var(--black3);border:1px solid rgba(212,175,55,0.1);padding:2.5rem 2rem;text-align:center;transition:all 0.4s;position:relative;overflow:hidden;cursor:pointer}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,175,55,0.05),transparent);opacity:0;transition:opacity 0.4s}
+.service-card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);transition:width 0.4s}
+.service-card:hover{border-color:rgba(212,175,55,0.4);transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.5),0 0 30px rgba(212,175,55,0.1)}
+.service-card:hover::before{opacity:1}
+.service-card:hover::after{width:80%}
+.service-icon{font-size:3rem;margin-bottom:1.5rem;display:block;transition:transform 0.4s}
+.service-card:hover .service-icon{transform:scale(1.15)}
+.service-card h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:0.8rem}
+.service-card p{font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6}
+.service-tag{display:inline-block;margin-top:1rem;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-dark);border:1px solid var(--gold-dark);padding:0.3rem 0.8rem}
+
+/* PRICING */
+.pricing{background:linear-gradient(180deg,var(--black2) 0%,var(--black) 100%)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;max-width:1000px;margin:3rem auto 0}
+.price-card{background:var(--black3);border:1px solid rgba(212,175,55,0.15);padding:2rem;text-align:center;transition:all 0.3s;position:relative}
+.price-card.featured{border-color:var(--gold);background:var(--black4)}
+.price-card.featured::before{content:'POPULAR';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-size:0.6rem;letter-spacing:0.2em;padding:0.3rem 1rem;font-weight:700;font-family:'Raleway',sans-serif}
+.price-card:hover{border-color:var(--gold);transform:translateY(-6px);box-shadow:0 15px 40px rgba(0,0,0,0.4),0 0 20px rgba(212,175,55,0.1)}
+.price-km{font-family:'Cinzel',serif;font-size:0.85rem;color:rgba(245,240,232,0.5);letter-spacing:0.1em;margin-bottom:1rem}
+.price-amount{font-family:'Cinzel',serif;font-size:3rem;font-weight:700;color:var(--gold);line-height:1}
+.price-amount sup{font-size:1.2rem;vertical-align:top;margin-top:0.8rem;display:inline-block}
+.price-unit{font-size:0.7rem;letter-spacing:0.15em;color:rgba(245,240,232,0.4);text-transform:uppercase;margin-top:0.5rem}
+.price-divider{width:40px;height:1px;background:rgba(212,175,55,0.2);margin:1rem auto}
+
+/* WHY CHOOSE US */
+.why{background:var(--black2)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:1100px;margin:3rem auto 0}
+.why-item{display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem;border:1px solid rgba(212,175,55,0.08);transition:all 0.3s}
+.why-item:hover{border-color:rgba(212,175,55,0.25);background:var(--glass)}
+.why-icon{width:50px;height:50px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.why-text h3{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.4rem}
+.why-text p{font-size:0.85rem;color:rgba(245,240,232,0.55);line-height:1.6}
+
+/* COUNTERS */
+.counters{background:var(--black3);border-top:1px solid rgba(212,175,55,0.1);border-bottom:1px solid rgba(212,175,55,0.1)}
+.counters-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:0;max-width:900px;margin:0 auto}
+.counter-item{text-align:center;padding:3rem 4rem;border-right:1px solid rgba(212,175,55,0.1)}
+.counter-item:last-child{border-right:none}
+.counter-num{font-family:'Cinzel',serif;font-size:3rem;font-weight:700;color:var(--gold);line-height:1}
+.counter-plus{font-size:1.8rem;color:var(--gold-dark)}
+.counter-label{font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(245,240,232,0.4);margin-top:0.5rem}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--black)}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1000px;margin:3rem auto 0}
+.testimonial-card{background:var(--black3);border:1px solid rgba(212,175,55,0.1);padding:2rem;position:relative;transition:all 0.3s}
+.testimonial-card::before{content:'"';position:absolute;top:1rem;right:1.5rem;font-family:'Cinzel',serif;font-size:5rem;color:rgba(212,175,55,0.08);line-height:1}
+.testimonial-card:hover{border-color:rgba(212,175,55,0.3);box-shadow:0 10px 30px rgba(0,0,0,0.3),0 0 20px rgba(212,175,55,0.05)}
+.stars{color:var(--gold);font-size:0.8rem;margin-bottom:1rem;letter-spacing:0.1em}
+.testimonial-text{font-size:0.9rem;line-height:1.7;color:rgba(245,240,232,0.7);margin-bottom:1.5rem;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:1rem}
+.author-avatar{width:40px;height:40px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:700;color:var(--black);font-size:0.9rem}
+.author-name{font-size:0.85rem;font-weight:600;color:var(--white)}
+.author-loc{font-size:0.75rem;color:rgba(245,240,232,0.4)}
+
+/* INSTAGRAM */
+.instagram{background:var(--black2)}
+.insta-center{max-width:700px;margin:0 auto;text-align:center}
+.insta-handle{font-family:'Cinzel',serif;font-size:2rem;color:var(--gold);margin:2rem 0;text-shadow:0 0 30px rgba(212,175,55,0.3)}
+.insta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin:2rem 0;max-width:500px;margin:2rem auto}
+.insta-item{aspect-ratio:1;background:var(--black3);border:1px solid rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;font-size:2.5rem;transition:all 0.3s;cursor:pointer;overflow:hidden;position:relative}
+.insta-item::before{content:'View';position:absolute;inset:0;background:rgba(212,175,55,0.85);display:flex;align-items:center;justify-content:center;color:var(--black);font-weight:700;font-family:'Raleway',sans-serif;font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.3s}
+.insta-item:hover::before{opacity:1}
+.insta-item:hover{border-color:var(--gold)}
+.insta-btn{display:inline-flex;align-items:center;gap:0.8rem;background:linear-gradient(135deg,#E1306C,#F77737,#FCAF45);color:white;padding:0.9rem 2rem;border:none;font-family:'Raleway',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;margin-top:1rem}
+.insta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(225,48,108,0.3)}
+
+/* FAQ */
+.faq{background:var(--black)}
+.faq-list{max-width:700px;margin:3rem auto 0}
+.faq-item{border-bottom:1px solid rgba(212,175,55,0.1);overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0;cursor:pointer;color:var(--white);font-weight:500;font-size:0.95rem;transition:color 0.3s}
+.faq-q:hover{color:var(--gold)}
+.faq-toggle{color:var(--gold);font-size:1.2rem;transition:transform 0.3s;flex-shrink:0}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s ease;color:rgba(245,240,232,0.6);font-size:0.9rem;line-height:1.7}
+.faq-a.open{max-height:200px;padding-bottom:1.5rem}
+.faq-q.active .faq-toggle{transform:rotate(45deg)}
+.faq-q.active{color:var(--gold)}
+
+/* CONTACT */
+.contact{background:var(--black2)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1000px;margin:3rem auto 0;align-items:start}
+.contact-info p{color:rgba(245,240,232,0.6);font-size:0.9rem;line-height:1.8;margin-bottom:2rem}
+.contact-btn{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:var(--glass);border:1px solid var(--glass-border);color:var(--white);text-decoration:none;font-size:0.85rem;font-weight:600;transition:all 0.3s;margin-bottom:1rem}
+.contact-btn:hover{background:rgba(212,175,55,0.15);border-color:var(--gold);transform:translateX(6px)}
+.contact-btn span{font-size:1.3rem}
+.contact-form{background:var(--black3);border:1px solid rgba(212,175,55,0.1);padding:2.5rem}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:0.5rem;font-weight:600}
+.form-group input,
+.form-group textarea,
+.form-group select{width:100%;background:var(--black);border:1px solid rgba(212,175,55,0.15);color:var(--white);padding:0.8rem 1rem;font-family:'Raleway',sans-serif;font-size:0.9rem;transition:border-color 0.3s;outline:none}
+.form-group input:focus,
+.form-group textarea:focus{border-color:rgba(212,175,55,0.5);box-shadow:0 0 10px rgba(212,175,55,0.05)}
+.form-group textarea{height:100px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-submit{width:100%;background:var(--gold);color:var(--black);padding:1rem;border:none;font-family:'Raleway',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.btn-submit:hover{background:var(--gold-light);box-shadow:0 0 20px rgba(212,175,55,0.3)}
+
+/* MAP */
+.map-section{background:var(--black);padding:0}
+.map-container{width:100%;height:350px;background:var(--black3);border-top:1px solid rgba(212,175,55,0.1);border-bottom:1px solid rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.map-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,10,10,0.7),rgba(212,175,55,0.02));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1rem}
+.map-placeholder-icon{font-size:4rem;opacity:0.3}
+.map-text{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);opacity:0.7}
+.map-sub{font-size:0.8rem;color:rgba(245,240,232,0.4);letter-spacing:0.1em}
+
+/* FOOTER */
+footer{background:var(--black);padding:4rem 2rem 2rem;border-top:1px solid rgba(212,175,55,0.1)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;max-width:1100px;margin:0 auto}
+.footer-brand .footer-logo{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);letter-spacing:0.15em;font-weight:700;margin-bottom:1rem}
+.footer-brand p{font-size:0.85rem;color:rgba(245,240,232,0.5);line-height:1.7;max-width:300px}
+.footer-tagline{color:var(--gold-dark);font-style:italic;font-size:0.9rem;margin-top:1rem}
+.footer-h{font-family:'Cinzel',serif;font-size:0.8rem;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:0.7rem}
+.footer-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:0.85rem;transition:color 0.3s}
+.footer-links a:hover{color:var(--gold)}
+.footer-contact-item{color:rgba(245,240,232,0.5);font-size:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.5rem}
+.footer-bottom{border-top:1px solid rgba(212,175,55,0.08);margin-top:3rem;padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:3rem auto 0;flex-wrap:wrap;gap:1rem}
+.footer-copyright{font-size:0.75rem;color:rgba(245,240,232,0.3);letter-spacing:0.1em}
+.social-links{display:flex;gap:0.8rem}
+.social-btn{width:36px;height:36px;border:1px solid rgba(212,175,55,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.3s;cursor:pointer;text-decoration:none;color:var(--white)}
+.social-btn:hover{border-color:var(--gold);background:rgba(212,175,55,0.1);color:var(--gold)}
+
+/* FLOATING WHATSAPP */
+.floating-wa{position:fixed;bottom:2rem;right:2rem;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem}
+.wa-btn{width:56px;height:56px;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;border-radius:50%}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(37,211,102,0.6)}
+.wa-tooltip{background:var(--black3);border:1px solid rgba(212,175,55,0.2);color:var(--white);font-size:0.75rem;padding:0.4rem 0.8rem;white-space:nowrap;letter-spacing:0.05em;opacity:0;transform:translateX(10px);transition:all 0.3s;border-radius:4px}
+.floating-wa:hover .wa-tooltip{opacity:1;transform:translateX(0)}
+
+/* ANIMATIONS */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.gold-shimmer{background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light),var(--gold),var(--gold-dark));background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
+
+/* MOBILE */
+@media(max-width:768px){
+nav{padding:1rem}
+.nav-links{display:none}
+.about-grid,.contact-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr}
+.counter-item{padding:2rem 2rem;border-right:none;border-bottom:1px solid rgba(212,175,55,0.1)}
+.form-row{grid-template-columns:1fr}
+.hero-stats{gap:1.5rem}
+}
+
+/* LOADING SCREEN */
+.loader{position:fixed;inset:0;background:var(--black);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s,visibility 0.5s}
+.loader.hidden{opacity:0;visibility:hidden}
+.loader-logo{font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:2rem}
+.loader-bar{width:200px;height:2px;background:rgba(212,175,55,0.1)}
+.loader-fill{height:100%;background:var(--gold);animation:load 1.5s ease-out forwards}
+@keyframes load{from{width:0}to{width:100%}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">NOE</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- FLOATING WHATSAPP -->
+<div class="floating-wa">
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+  <a href="https://wa.me/919566700534" class="wa-btn" target="_blank" rel="noopener">💬</a>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">NOE ✦ DELIVERY</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://wa.me/919566700534" class="nav-cta" target="_blank">Order Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Thanjavur Premium Local Delivery ✦</div>
+    <span class="hero-scooter">🛵</span>
+    <h1 class="hero-title">
+      <span class="gold-shimmer">Namba Ooru</span>
+      Express Delivery
+    </h1>
+    <p class="hero-sub">"Neenga Sollunga… Naanga Deliver Pannuvom!"</p>
+    <p class="hero-tagline"><strong>Fast</strong> &nbsp;•&nbsp; <strong>Safe</strong> &nbsp;•&nbsp; <strong>Trusted</strong></p>
+    <div class="hero-btns">
+      <a href="https://wa.me/919566700534" class="btn-gold" target="_blank">🚀 Order Now</a>
+      <a href="https://wa.me/919566700534" class="btn-outline" target="_blank">💬 WhatsApp Us</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Deliveries Done</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Customer Rating</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num">₹30</div>
+        <div class="stat-label">Starts From</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    Scroll to Explore
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">About Us</div>
+      <h2 class="section-title">Your <span class="gold">Local Area</span>,<br>Our Trusted Service</h2>
+      <div class="divider"></div>
+      <p style="color:rgba(245,240,232,0.65);line-height:1.9;font-size:0.95rem;margin-bottom:1.5rem">
+        Namba Ooru Express Delivery is your neighborhood's most reliable delivery partner. We pick up and deliver everything — food, parcels, medicines, and important documents — with care and lightning speed.
+      </p>
+      <p style="color:rgba(245,240,232,0.55);line-height:1.8;font-size:0.9rem;margin-bottom:2rem">
+        Based locally, we know every street, every shortcut. Affordable rates, real-time WhatsApp support, and a smile delivered with every order.
+      </p>
+      <a href="https://wa.me/919566700534" class="btn-gold" target="_blank">Start Delivery →</a>
+    </div>
+    <div class="about-cards">
+      <div class="glass-card">
+        <div class="glass-card-icon">⚡</div>
+        <h3>Lightning Fast</h3>
+        <p>Most deliveries completed within 45 minutes in your area</p>
+      </div>
+      <div class="glass-card">
+        <div class="glass-card-icon">🔒</div>
+        <h3>100% Safe</h3>
+        <p>Your items handled with professional care and responsibility</p>
+      </div>
+      <div class="glass-card">
+        <div class="glass-card-icon">💰</div>
+        <h3>Affordable</h3>
+        <p>Luxury service at pocket-friendly prices starting ₹30</p>
+      </div>
+      <div class="glass-card">
+        <div class="glass-card-icon">📍</div>
+        <h3>Local Expert</h3>
+        <p>We know every corner of your neighborhood intimately</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="center">
+    <div class="section-label">What We Deliver</div>
+    <h2 class="section-title">Our <span class="gold">Premium Services</span></h2>
+    <div class="divider"></div>
+    <p class="section-sub">From hot meals to urgent medicines, we deliver it all with the same premium care and speed.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🍱</span>
+      <h3>Food Delivery</h3>
+      <p>Hot meals from your favourite restaurants and home kitchens, delivered fresh to your door</p>
+      <span class="service-tag">Quick Delivery</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📦</span>
+      <h3>Parcel Delivery</h3>
+      <p>Packages, gifts, and everyday parcels — safely transported with real-time tracking</p>
+      <span class="service-tag">Insured Handling</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💊</span>
+      <h3>Medicine Delivery</h3>
+      <p>Urgent prescriptions and health essentials delivered with priority handling</p>
+      <span class="service-tag">Priority Rush</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📄</span>
+      <h3>Documents Delivery</h3>
+      <p>Important papers, legal docs, and business files — trusted courier service</p>
+      <span class="service-tag">Confidential</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="center">
+    <div class="section-label">Transparent Pricing</div>
+    <h2 class="section-title">Simple <span class="gold">Luxury Rates</span></h2>
+    <div class="divider"></div>
+    <p class="section-sub">No hidden charges. No surprises. Just honest, affordable delivery pricing.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-km">0 – 2 KM</div>
+      <div class="price-amount"><sup>₹</sup>30</div>
+      <div class="price-divider"></div>
+      <div class="price-unit">Flat Rate</div>
+      <p style="font-size:0.8rem;color:rgba(245,240,232,0.45);margin-top:1rem;line-height:1.5">Perfect for nearby localities and quick runs</p>
+    </div>
+    <div class="price-card featured">
+      <div class="price-km">2 – 5 KM</div>
+      <div class="price-amount"><sup>₹</sup>50</div>
+      <div class="price-divider"></div>
+      <div class="price-unit">Flat Rate</div>
+      <p style="font-size:0.8rem;color:rgba(245,240,232,0.45);margin-top:1rem;line-height:1.5">Most common delivery range in the city</p>
+    </div>
+    <div class="price-card">
+      <div class="price-km">5 – 8 KM</div>
+      <div class="price-amount"><sup>₹</sup>80</div>
+      <div class="price-divider"></div>
+      <div class="price-unit">Flat Rate</div>
+      <p style="font-size:0.8rem;color:rgba(245,240,232,0.45);margin-top:1rem;line-height:1.5">Covering wider city zones with ease</p>
+    </div>
+    <div class="price-card">
+      <div class="price-km">8+ KM</div>
+      <div class="price-amount"><sup>₹</sup>10</div>
+      <div class="price-divider"></div>
+      <div class="price-unit">Per KM Extra</div>
+      <p style="font-size:0.8rem;color:rgba(245,240,232,0.45);margin-top:1rem;line-height:1.5">Extended delivery with per-km pricing</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:2.5rem">
+    <a href="https://wa.me/919566700534" class="btn-gold" target="_blank">Get a Quote on WhatsApp</a>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why" id="why">
+  <div class="center">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">The <span class="gold">NOE Difference</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">⚡</div>
+      <div class="why-text">
+        <h3>Fast Delivery</h3>
+        <p>Swift pick-up and delivery, most orders done within 45 minutes of confirmation</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🛡️</div>
+      <div class="why-text">
+        <h3>Safe Handling</h3>
+        <p>Every package treated with care. Fragile or sensitive — we handle it all with respect</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🤝</div>
+      <div class="why-text">
+        <h3>Trusted Service</h3>
+        <p>Hundreds of happy customers in your neighborhood trust us daily</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">💎</div>
+      <div class="why-text">
+        <h3>Affordable Rates</h3>
+        <p>Premium quality service at prices that respect your budget, starting just ₹30</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">💬</div>
+      <div class="why-text">
+        <h3>Live WhatsApp Support</h3>
+        <p>Real-time updates and instant support through WhatsApp — always available for you</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">📍</div>
+      <div class="why-text">
+        <h3>Local Knowledge</h3>
+        <p>Born and raised here — we know every lane, every shortcut in your area</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTERS -->
+<div class="counters">
+  <div class="counters-grid">
+    <div class="counter-item">
+      <div class="counter-num"><span class="counter" data-target="500">0</span><span class="counter-plus">+</span></div>
+      <div class="counter-label">Deliveries Done</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num"><span class="counter" data-target="200">0</span><span class="counter-plus">+</span></div>
+      <div class="counter-label">Happy Customers</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num"><span class="counter" data-target="4">0</span><span style="color:var(--gold);font-size:1.8rem">.9★</span></div>
+      <div class="counter-label">Average Rating</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num"><span class="counter" data-target="30">0</span><span style="color:var(--gold);font-size:1.5rem">min</span></div>
+      <div class="counter-label">Avg Delivery Time</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="center">
+    <div class="section-label">Customer Stories</div>
+    <h2 class="section-title">What People <span class="gold">Say About Us</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Super fast delivery! Ordered food and it arrived piping hot within 30 minutes. Really impressive service for such affordable rates. Will definitely use again!</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RK</div>
+        <div>
+          <div class="author-name">Ravi Kumar</div>
+          <div class="author-loc">📍 Tambaram</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Needed urgent medicine delivery at night. They responded instantly on WhatsApp and delivered within minutes. Life-savers! Namba Ooru deserves all 5 stars!</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PS</div>
+        <div>
+          <div class="author-name">Priya Suresh</div>
+          <div class="author-loc">📍 Pallavaram</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Best local delivery service! Sent important documents safely across the city. Professional handling and on-time delivery. Very trustworthy team!</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MA</div>
+        <div>
+          <div class="author-name">Mohammed Arif</div>
+          <div class="author-loc">📍 Chromepet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram" id="instagram">
+  <div class="insta-center">
+    <div class="section-label">Follow Us</div>
+    <h2 class="section-title">We're on <span class="gold">Instagram</span></h2>
+    <div class="divider" style="margin:1.5rem auto"></div>
+    <div class="insta-handle">@Namba_ooru_delivery</div>
+    <div class="insta-grid">
+      <div class="insta-item">🛵</div>
+      <div class="insta-item">📦</div>
+      <div class="insta-item">🍱</div>
+      <div class="insta-item">💊</div>
+      <div class="insta-item">📄</div>
+      <div class="insta-item">⭐</div>
+    </div>
+    <a href="https://instagram.com/Namba_ooru_delivery" class="insta-btn" target="_blank" rel="noopener">
+      📸 Follow on Instagram
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="center">
+    <div class="section-label">FAQs</div>
+    <h2 class="section-title">Got <span class="gold">Questions?</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What areas do you deliver in?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">We currently cover Chennai and surrounding neighborhoods. WhatsApp us with your pickup and drop location to confirm coverage in your area. We're constantly expanding!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I place an order?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Simply WhatsApp us at 9566700534 with your pickup location, drop location, and what you need delivered. We'll confirm availability and pricing instantly.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How long does delivery take?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Most deliveries within 5km are completed in 30–45 minutes. Longer distances may take slightly more time. We'll give you a real-time ETA when you order.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What payment methods do you accept?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">We accept cash on delivery, UPI (GPay, PhonePe, Paytm), and bank transfers. Payment is collected after delivery is completed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Do you deliver medicines and documents safely?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Absolutely. Medicine and document deliveries are treated with the highest priority and confidentiality. We handle them with special care and deliver directly to the recipient.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="center" style="margin-bottom:3rem">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Place Your <span class="gold">Order Now</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-label">Contact Us</div>
+      <h3 style="font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold);margin:1rem 0">We're Ready to Deliver</h3>
+      <p>Reach us instantly through WhatsApp or give us a call. Available throughout the day for all your delivery needs.</p>
+      <a href="tel:+919566700534" class="contact-btn">
+        <span>📞</span>
+        <div>
+          <div style="font-size:0.75rem;color:var(--gold-dark);letter-spacing:0.1em;text-transform:uppercase">Call Us Now</div>
+          <div style="font-size:1rem;color:var(--gold)">+91 95667 00534</div>
+        </div>
+      </a>
+      <a href="https://wa.me/919566700534" class="contact-btn" target="_blank">
+        <span>💬</span>
+        <div>
+          <div style="font-size:0.75rem;color:var(--gold-dark);letter-spacing:0.1em;text-transform:uppercase">WhatsApp Us</div>
+          <div style="font-size:1rem;color:var(--gold)">+91 95667 00534</div>
+        </div>
+      </a>
+      <a href="https://instagram.com/Namba_ooru_delivery" class="contact-btn" target="_blank">
+        <span>📸</span>
+        <div>
+          <div style="font-size:0.75rem;color:var(--gold-dark);letter-spacing:0.1em;text-transform:uppercase">Instagram</div>
+          <div style="font-size:1rem;color:var(--gold)">@Namba_ooru_delivery</div>
+        </div>
+      </a>
+    </div>
+    <div class="contact-form">
+      <h3 style="font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);letter-spacing:0.15em;margin-bottom:1.5rem">SEND DELIVERY REQUEST</h3>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full name" required/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+91 XXXXX XXXXX" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pickup Location</label>
+          <input type="text" placeholder="Pickup address or area" required/>
+        </div>
+        <div class="form-group">
+          <label>Drop Location</label>
+          <input type="text" placeholder="Delivery address or area" required/>
+        </div>
+        <div class="form-group">
+          <label>Message / Item Details</label>
+          <textarea placeholder="Describe what needs to be delivered..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">🚀 Send Delivery Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-container">
+    <div class="map-overlay">
+      <div class="map-placeholder-icon">📍</div>
+      <div class="map-text">Serving Your Area</div>
+      <div class="map-sub">Chennai & Surrounding Neighborhoods</div>
+      <a href="https://maps.google.com/?q=Chennai,Tamil+Nadu" class="btn-outline" style="margin-top:1rem;font-size:0.8rem" target="_blank">Open in Google Maps →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">✦ NAMBA OORU EXPRESS</div>
+      <p>Chennai's trusted premium local delivery service. Fast, safe, and always on time. We bring your area's best right to your doorstep.</p>
+      <p class="footer-tagline">"Your Area, Our Service"</p>
+      <div class="social-links" style="margin-top:1.5rem">
+        <a href="https://instagram.com/Namba_ooru_delivery" class="social-btn" target="_blank">📸</a>
+        <a href="https://wa.me/919566700534" class="social-btn" target="_blank">💬</a>
+        <a href="tel:+919566700534" class="social-btn">📞</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-h">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-h">Contact</div>
+      <div class="footer-contact-item">📞 <a href="tel:+919566700534" style="color:inherit;text-decoration:none">+91 95667 00534</a></div>
+      <div class="footer-contact-item">💬 WhatsApp Available</div>
+      <div class="footer-contact-item">📸 @Namba_ooru_delivery</div>
+      <div class="footer-contact-item">📍 Chennai, Tamil Nadu</div>
+      <div style="margin-top:1.5rem;padding:1rem;border:1px solid rgba(212,175,55,0.15);background:rgba(212,175,55,0.03)">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;color:var(--gold-dark);text-transform:uppercase;margin-bottom:0.5rem">Starting From</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.8rem;color:var(--gold)">₹30</div>
+        <div style="font-size:0.75rem;color:rgba(245,240,232,0.4)">Per Delivery</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copyright">© 2025 Namba Ooru Express Delivery. All rights reserved.</div>
+    <div class="footer-copyright" style="color:var(--gold-dark)">"Fast • Safe • Trusted"</div>
+  </div>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('hidden')},1600)
+})
+
+// FAQ Toggle
+function toggleFaq(el){
+  const isActive=el.classList.contains('active')
+  document.querySelectorAll('.faq-q').forEach(q=>{q.classList.remove('active');q.nextElementSibling.classList.remove('open')})
+  if(!isActive){el.classList.add('active');el.nextElementSibling.classList.add('open')}
+}
+
+// Counter Animation
+function animateCounters(){
+  const counters=document.querySelectorAll('.counter')
+  counters.forEach(counter=>{
+    const target=parseInt(counter.getAttribute('data-target'))
+    const duration=2000
+    const step=target/duration*16
+    let current=0
+    const timer=setInterval(()=>{
+      current+=step
+      if(current>=target){current=target;clearInterval(timer)}
+      counter.textContent=Math.floor(current)
+    },16)
+  })
+}
+
+// Intersection Observer for counters
+const counterSection=document.querySelector('.counters')
+let counted=false
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;animateCounters()}})
+},{threshold:0.5})
+if(counterSection)obs.observe(counterSection)
+
+// Form submission
+function handleSubmit(e){
+  e.preventDefault()
+  const btn=e.target.querySelector('.btn-submit')
+  btn.textContent='✅ Request Sent! We\'ll WhatsApp you soon'
+  btn.style.background='#1a6b35'
+  btn.style.color='white'
+  setTimeout(()=>{
+    btn.textContent='🚀 Send Delivery Request'
+    btn.style.background=''
+    btn.style.color=''
+    e.target.reset()
+  },3000)
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+  anchor.addEventListener('click',function(e){
+    e.preventDefault()
+    const target=document.querySelector(this.getAttribute('href'))
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'})
+  })
+})
+
+// Navbar scroll effect
+window.addEventListener('scroll',()=>{
+  const nav=document.querySelector('nav')
+  if(window.scrollY>50){nav.style.padding='0.7rem 2rem';nav.style.borderBottomColor='rgba(212,175,55,0.25)'}
+  else{nav.style.padding='1rem 2rem';nav.style.borderBottomColor='rgba(212,175,55,0.15)'}
+})
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}
+  })
+},{threshold:0.1})
+document.querySelectorAll('.glass-card,.service-card,.price-card,.why-item,.testimonial-card').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.5s ease, transform 0.5s ease'
+  observer.observe(el)
+})
+</script>
+</body>
+</html>
